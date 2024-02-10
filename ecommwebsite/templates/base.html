@@ -57,13 +57,24 @@
           <li><a class="nav-link scrollto"        href="/about">About</a></li>
           <li><a class="nav-link scrollto"        href="/about">Orders</a></li>
           <li><a class="nav-link scrollto"        href="/about">Profile</a></li>
+
+          {% if request.user.is_authenticated %}
+          
+          <li><a class="nav-link scrollto" href="/authentication/login/">
+            Logout {{ user.username }}
+          </a></li>
+
+          {% else %}
+
           <li class="dropdown"><a href="#"><span>Sign In</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="/authentication/signup/">Sign Up</a></li>
               <li><a href="/authentication/login/">Login</a></li>
-              <li><a href="/authentication/login/">Logout</a></li>
             </ul>
           </li>
+
+          {% endif %}
+
           <li><a class="nav-link scrollto bg-success p-2" href="#contact">Contact</a></li>
           <li><a class="nav-link scrollto bg-danger p-2" href="#contact">Cart</a></li>
         </ul>
@@ -78,13 +89,6 @@
     <div class="hero-container">
       {% block content %}
       
-      {% for message in messages %}
-<div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-  <strong>{{ message }}</strong>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endfor %}
-
       {% endblock content %}
     </div>
   </section><!-- End Hero -->

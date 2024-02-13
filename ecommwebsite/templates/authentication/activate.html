@@ -1,0 +1,8 @@
+{% autoescape off %}
+
+H1 {{ user.username }}
+Please click the link below to reset your password.
+
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+{% endautoescape %}

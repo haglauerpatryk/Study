@@ -9,7 +9,7 @@ from django.utils.http import urlsafe_base64_encode, \
 from .utils import generate_token, TokenGenerator
 from django.utils.encoding import force_bytes, force_str, \
                                   DjangoUnicodeDecodeError
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, get_connection
 from django.conf import settings
 
 # Create your views here.
@@ -41,8 +41,13 @@ def signup(request):
                 "uid"   : urlsafe_base64_encode(force_bytes(user.pk)),
                 "token" : generate_token.make_token(user),
         })
+
+        connection = get_connection(username=settings.EMAIL_HOST_USER,
+                                    password=settings.EMAIL_HOST_PASSWORD, 
+                                    ssl=None)
         email_message = EmailMessage(email_subject, message, 
-                                     settings.EMAIL_HOST_USER, [email])
+                                     settings.EMAIL_HOST_USER, [email], 
+                                     connection=connection)
         email_message.send()
         messages.success(request, "Account created successfully. Please \
                                    check your email to activate your account.")
